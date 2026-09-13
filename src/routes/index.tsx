@@ -78,7 +78,7 @@ function SkillMatchApp() {
 
   async function submitJd() {
     setParsing(true);
-    try { const result = await parseJob({ data: { rawText: jdText } }); setJob(result); setJdOpen(false); setScreen("breakdown"); toast.success("Job description parsed"); }
+    try { const result = await parseJob({ data: { rawText: jdText } }); setJob({ ...result, role_summary: result.role_summary ?? "Requirements parsed and ready for candidate matching." }); setJdOpen(false); setScreen("breakdown"); toast.success("Job description parsed"); }
     catch (error) { toast.error(error instanceof Error ? error.message : "Could not parse the job description"); }
     finally { setParsing(false); }
   }
