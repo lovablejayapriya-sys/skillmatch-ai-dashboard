@@ -14,7 +14,188 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      candidates: {
+        Row: {
+          analyzed_at: string | null
+          created_at: string
+          current_company: string | null
+          current_role: string | null
+          email: string | null
+          error_message: string | null
+          file_name: string
+          file_path: string
+          full_name: string | null
+          id: string
+          job_description_id: string
+          parsed_education: Json
+          parsed_experience: Json
+          parsed_skills: string[]
+          phone: string | null
+          raw_text: string | null
+          status: Database["public"]["Enums"]["candidate_status"]
+          total_experience_years: number | null
+        }
+        Insert: {
+          analyzed_at?: string | null
+          created_at?: string
+          current_company?: string | null
+          current_role?: string | null
+          email?: string | null
+          error_message?: string | null
+          file_name: string
+          file_path: string
+          full_name?: string | null
+          id?: string
+          job_description_id: string
+          parsed_education?: Json
+          parsed_experience?: Json
+          parsed_skills?: string[]
+          phone?: string | null
+          raw_text?: string | null
+          status?: Database["public"]["Enums"]["candidate_status"]
+          total_experience_years?: number | null
+        }
+        Update: {
+          analyzed_at?: string | null
+          created_at?: string
+          current_company?: string | null
+          current_role?: string | null
+          email?: string | null
+          error_message?: string | null
+          file_name?: string
+          file_path?: string
+          full_name?: string | null
+          id?: string
+          job_description_id?: string
+          parsed_education?: Json
+          parsed_experience?: Json
+          parsed_skills?: string[]
+          phone?: string | null
+          raw_text?: string | null
+          status?: Database["public"]["Enums"]["candidate_status"]
+          total_experience_years?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidates_job_description_id_fkey"
+            columns: ["job_description_id"]
+            isOneToOne: false
+            referencedRelation: "job_descriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_descriptions: {
+        Row: {
+          company: string
+          created_at: string
+          education_requirement: string | null
+          id: string
+          job_level: Database["public"]["Enums"]["job_level"]
+          max_experience_years: number | null
+          min_experience_years: number | null
+          preferred_skills: string[]
+          raw_text: string
+          required_skills: string[]
+          role_summary: string | null
+          title: string
+        }
+        Insert: {
+          company: string
+          created_at?: string
+          education_requirement?: string | null
+          id?: string
+          job_level?: Database["public"]["Enums"]["job_level"]
+          max_experience_years?: number | null
+          min_experience_years?: number | null
+          preferred_skills?: string[]
+          raw_text: string
+          required_skills?: string[]
+          role_summary?: string | null
+          title: string
+        }
+        Update: {
+          company?: string
+          created_at?: string
+          education_requirement?: string | null
+          id?: string
+          job_level?: Database["public"]["Enums"]["job_level"]
+          max_experience_years?: number | null
+          min_experience_years?: number | null
+          preferred_skills?: string[]
+          raw_text?: string
+          required_skills?: string[]
+          role_summary?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      match_results: {
+        Row: {
+          ai_summary: string | null
+          bonus_skills: string[]
+          candidate_id: string
+          concerns: string[]
+          created_at: string
+          id: string
+          job_description_id: string
+          keyword_score: number
+          matched_skills: string[]
+          missing_skills: string[]
+          overall_score: number
+          rank: number | null
+          semantic_score: number
+          strengths: string[]
+        }
+        Insert: {
+          ai_summary?: string | null
+          bonus_skills?: string[]
+          candidate_id: string
+          concerns?: string[]
+          created_at?: string
+          id?: string
+          job_description_id: string
+          keyword_score?: number
+          matched_skills?: string[]
+          missing_skills?: string[]
+          overall_score?: number
+          rank?: number | null
+          semantic_score?: number
+          strengths?: string[]
+        }
+        Update: {
+          ai_summary?: string | null
+          bonus_skills?: string[]
+          candidate_id?: string
+          concerns?: string[]
+          created_at?: string
+          id?: string
+          job_description_id?: string
+          keyword_score?: number
+          matched_skills?: string[]
+          missing_skills?: string[]
+          overall_score?: number
+          rank?: number | null
+          semantic_score?: number
+          strengths?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_results_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_results_job_description_id_fkey"
+            columns: ["job_description_id"]
+            isOneToOne: false
+            referencedRelation: "job_descriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +204,14 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      candidate_status:
+        | "pending"
+        | "processing"
+        | "analyzed"
+        | "shortlisted"
+        | "rejected"
+        | "failed"
+      job_level: "Junior" | "Mid" | "Senior" | "Lead"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +338,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      candidate_status: [
+        "pending",
+        "processing",
+        "analyzed",
+        "shortlisted",
+        "rejected",
+        "failed",
+      ],
+      job_level: ["Junior", "Mid", "Senior", "Lead"],
+    },
   },
 } as const
