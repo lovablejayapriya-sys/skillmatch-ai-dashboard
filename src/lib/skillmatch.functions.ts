@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-const model = "llama-3.3-70b-versatile";
+const model = "openai/gpt-oss-120b";
 const levelSchema = z.enum(["Junior", "Mid", "Senior", "Lead"]);
 
 const jdResultSchema = z.object({
